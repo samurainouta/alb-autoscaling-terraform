@@ -1,0 +1,6 @@
+# Terraform 状態ファイル
+*.tfstate
+*.tfstate.backup
+
+# Terraform プロバイダ
+.terraform/
