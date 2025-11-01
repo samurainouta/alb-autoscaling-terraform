@@ -1,88 +1,94 @@
-# ALB + Auto Scaling Terraform Project
+# Terraformで構築する ALB + Auto Scaling 環境
 
-このプロジェクトは、Terraform を使って AWS 上に以下を構築するデモです。
-
-- VPC と Public Subnet
-- Internet Gateway
-- Security Group（EC2 / ALB）
-- EC2 インスタンス（Auto Scaling）
-- ALB (Application Load Balancer) と Listener / Target Group
+このプロジェクトは、Terraformを使用してAWS上にALB + Auto Scaling構成を自動構築するデモです。  
+VPC、サブネット、セキュリティグループ、ALB、EC2 Auto Scalingを自動的に構成します。
 
 ---
 
-## 1. VPC と Subnet
-
+## 1️⃣ VPC と Subnet
 作成した VPC と Public Subnet を確認できます。
 
-![VPCとSubnet](vpc_subnet_overview.png)
+![VPCとSubnet](./images/vpc-subnet.png)
 
-- Subnet 名：public_a, public_c
-- CIDR / AZ が正しいことを確認
+Subnet 名：`public_a`, `public_c`  
+CIDR / AZ が正しいことを確認。
 
 ---
 
-## 2. Internet Gateway
-
+## 2️⃣ Internet Gateway
 Public Subnet がインターネットに接続できる状態を示します。
 
-![Internet Gateway](internet_gateway.png)
+![Internet Gateway](./images/internet-gateway.png)
 
-- IGW が VPC にアタッチされていることを確認
+IGW が VPC にアタッチされていることを確認。
 
 ---
 
-## 3. Security Group
-
+## 3️⃣ Security Group
 EC2 と ALB 用のセキュリティグループ設定を確認。
 
-![Security Group](security_group_rules.png)
+![Security Group](./images/security-group.png)
 
-- SSH / HTTP ルールが正しく設定されていることを確認
+SSH（22）/ HTTP（80）ルールが正しく設定されていることを確認。
 
 ---
 
-## 4. EC2 インスタンス
-
+## 4️⃣ EC2 インスタンス
 Terraform で起動した EC2 インスタンス一覧。
 
-![EC2 Instances](ec2_instances.png)
+![EC2 Instances](./images/ec2-instances.png)
 
-- Public IP が割り当てられていることを確認
+Public IP が割り当てられていることを確認。
 
 ---
 
-## 5. ALB / Listener / Target Group
-
+## 5️⃣ ALB / Listener / Target Group
 ALB の Listener と Target Group 設定画面。
 
-![ALB Listener / Target Group](alb_listener_targetgroup.png)
+![ALB Listener and Target Group](./images/alb-target-group.png)
 
-- ターゲットグループの設定が正しいことを確認
-- 自動スケーリングが機能する設定になっていることを確認
+ターゲットグループの設定が正しいことを確認。  
+自動スケーリングが機能する設定になっていることを確認。
 
 ---
 
-## 6. Terraform Apply 完了
-
+## 6️⃣ Terraform Apply 完了
 Terraform によるリソース作成が完了した画面。
 
-![Terraform Apply Complete](terraform_apply_complete.png)
+![Terraform Apply Complete](./images/terraform_apply_complete.png)
 
-- `Resources: 5 added, 0 changed, 0 destroyed` が表示されていることを確認
-
----
-
-## 7. 注意事項
-
-- EC2 の HTTP / SSH 設定は必要に応じて変更
-- ALB ターゲットが `unhealthy` の場合は EC2 上の Web サーバー設定を確認
-- このプロジェクトでは Terraform の環境ファイル（`.terraform/`）や `.tfstate` は GitHub にアップロードしない
+`Resources: 5 added, 0 changed, 0 destroyed` が表示されていれば成功です。
 
 ---
 
-## 8. 使用技術
+## 7️⃣ Terraform Destroy 完了
+Terraform によるリソース削除が完了した画面。
 
-- Terraform
-- AWS VPC / Subnet / IGW / Security Group
-- EC2 / Auto Scaling
-- ALB / Target Group
+![Terraform Destroy Complete](./images/terraform_destroy_complete.png)
+
+`Destroy complete! Resources: 5 destroyed.` が表示されていれば、  
+AWS上のリソースはすべて削除されています。
+
+---
+
+## ⚙️ 使用技術
+- **Terraform v1.x**
+- **AWS Provider v5.x**
+- **AWS EC2 / ALB / Auto Scaling**
+- **Infrastructure as Code (IaC)** による構成管理
+
+---
+
+## ⚠️ 注意事項
+- `.terraform/` や `*.tfstate` は Git に含めないように `.gitignore` で除外済み  
+- EC2 の HTTP / SSH 設定は必要に応じて変更可能  
+- ALB ターゲットが *unhealthy* の場合は、EC2 上の Web サーバー設定を確認  
+- `terraform destroy` を忘れずに実行してコストを抑制すること
+
+---
+
+📘 **目的**  
+このプロジェクトは、Terraformの基本構文とAWSインフラの構成を理解するための学習用デモです。  
+クラウドエンジニア志望者が、インフラ自動化のポートフォリオとして利用できます。
+
+
