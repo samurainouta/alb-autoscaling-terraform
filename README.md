@@ -1,62 +1,104 @@
-# ALB + Auto Scaling Terraform ポートフォリオ
-
-このプロジェクトは、Terraform を使用して **AWS 上に EC2 / ALB / Auto Scaling 環境を自動構築** するデモです。  
-クラウドエンジニア志望として、ポートフォリオ用に作成しました。
-
----
+# Terraform ALB & Auto Scaling ポートフォリオ
 
 ## 目的
-- Terraform でインフラをコード化する経験を積む
-- ALB + Auto Scaling を組み合わせてスケーラブルな環境を構築
-- AWS の VPC、Subnet、Security Group などの基本設定を理解
+
+このプロジェクトの目的は、Terraform を用いて AWS 上に以下の構成をコードで自動構築することです：
+
+- VPC + Public Subnet
+- Internet Gateway (IGW)
+- EC2 インスタンス（Auto Scaling 対応）
+- Application Load Balancer (ALB)
+- Security Group 設定
+- ターゲットグループと Listener の設定
+
+クラウド環境の自動構築を通じて、Terraform の基本操作と AWS インフラの理解を深めることを狙いとしています。
 
 ---
 
-## 工夫点 / 学んだこと
-- Terraform のリソース依存関係を意識して構築
-- Security Group は最小権限で SSH / HTTP アクセスを設定
-- ALB のターゲットグループのヘルスチェック設定を理解
-- EC2 に自動で Web サーバーをセットアップする方法を学習
+## 使用スタック
+
+| 技術       | 内容・用途                                      |
+|------------|--------------------------------------------------|
+| Terraform  | インフラ構成のコード管理（IaC）                  |
+| AWS EC2    | Web サーバーとしての仮想マシン                    |
+| AWS VPC    | ネットワークの基盤構成                           |
+| AWS Subnet | パブリックサブネットの設計                       |
+| AWS IGW    | インターネットアクセスのためのゲートウェイ       |
+| AWS ALB    | HTTP リクエストの負荷分散                        |
+| Auto Scaling | EC2 インスタンスの自動スケーリング             |
+| Security Group | SSH / HTTP アクセス制御                      |
+| GitHub     | コードと成果物のバージョン管理・公開             |
 
 ---
 
-## 作業手順（スクショ付き）
+## 学び
 
-### 1. VPC と Subnet
-作成した VPC と Public Subnet を確認  
-Subnet 名：public_a, public_c  
-CIDR / AZ が正しいことを確認
-![VPCとSubnet](images/vpc_subnet_overview.png)
-
-### 2. Internet Gateway
-Public Subnet がインターネットに接続可能か確認
-![IGW](images/internet_gateway.png)
-
-### 3. Security Group
-EC2 / ALB 用 SG の設定を確認  
-SSH / HTTP ルールが正しく反映されていることを示す
-![Security Group](images/security_group.png)
-
-### 4. EC2 インスタンス
-Terraform で起動した EC2 インスタンス一覧  
-Public IP が割り当てられていることを確認
-![EC2](images/ec2_instances.png)
-
-### 5. ALB / Listener / Target Group
-ALB の Listener と Target Group 設定を確認
-![ALB Listener](images/alb_listener.png)
-
-### 6. Terraform Apply 完了
-Terraform によるリソース作成が完了
-![Apply Complete](images/terraform_apply_complete.png)
-
-### 7. Terraform Destroy 完了
-Terraform によるリソース削除が完了
-![Destroy Complete](images/terraform_destroy_complete.png)
+- Terraform によるインフラ構成のコード管理（IaC）
+- AWS VPC / Subnet / IGW のネットワーク設計
+- Security Group によるアクセス制御（SSH / HTTP）
+- EC2 インスタンスの起動と Web サーバー構成
+- Auto Scaling による可用性の向上
+- ALB とターゲットグループの連携とヘルスチェック設定
+- GitHub によるコードと成果物の管理方法
 
 ---
 
-## 注意点 / 今後の改善
-- EC2 の HTTP / SSH 設定は必要に応じて変更
-- ALB ターゲットが unhealthy になる場合は、EC2 上の Web サーバー設定を確認
-- Terraform の `.terraform/` や `.tfstate` ファイルは GitHub にアップロードしていない
+## 工夫した点
+
+- Security Group は必要最低限のポート（SSH:22 / HTTP:80）のみ許可
+- リソース名や Subnet 名は一目でわかるよう命名規則を統一
+- Target Group と Listener の紐付けを明示的に設定
+- `.terraform/` や `.tfstate` は Git 管理対象外とし、スクリーンショットとコードのみをアップロード
+- スクリーンショットは提出用に整理・リネームし、README に反映
+
+---
+
+## スクリーンショット一覧（構築順）
+
+### 1. Terraform Apply 完了画面  
+![Terraform Apply Complete](images/image_5.png)  
+Terraform によるリソース作成が正常に完了したことを示す出力結果。すべての構成がコードで自動化されていることを証明。
+
+### 2. VPC の作成確認  
+![VPC](images/image_1.png)  
+Terraform により作成された VPC の詳細。CIDR ブロックや関連リソースが確認できます。
+
+### 3. Public Subnet の確認  
+![Subnet](images/image_2.png)  
+VPC 内に作成されたパブリックサブネットの設定。AZ やルートテーブルとの関連も確認。
+
+### 4. Internet Gateway のアタッチ確認  
+![Internet Gateway](images/image_3.png)  
+IGW が VPC にアタッチされていることを確認。インターネットアクセスのために必要な構成。
+
+### 5. Security Group / VPC 構成の全体像  
+![SG / VPC Overview](images/sg_vpc_overview.png)  
+VPC と Security Group の構成を確認。VPC の CIDR や SG の関連付けが表示されています。
+
+### 6. セキュリティグループ HTTP/SSH 設定  
+![SG HTTP Listener](images/sg_http_listener.png)  
+HTTP（ポート80）と SSH（ポート22）のインバウンドルールを設定したセキュリティグループの詳細。
+
+### 7. EC2 インスタンスの起動確認  
+![EC2](images/image_4.png)  
+Auto Scaling により起動された EC2 インスタンスのステータスと詳細情報。ALB のターゲットとして登録される。
+
+### 8. ターゲットグループの構成確認  
+![Target Group](images/tg_targetgroup.png)  
+ターゲットグループの構成と、登録された EC2 インスタンスのヘルスチェック状態を表示。
+
+### 9. ALB Listener 設定  
+![ALB Listener](images/alb_listener.png)  
+ALB に設定されたリスナーの構成。HTTP リクエストをターゲットグループにルーティングする設定を確認。
+
+---
+
+## 次回に向けて
+
+- ALB のターゲットが `unhealthy` になる原因の検証（Web サーバー設定やヘルスチェック URL の調整）
+- Terraform モジュール化の実践（VPC / EC2 / ALB を分けて管理し、再利用性を向上）
+- GitHub に大きなファイルを含めず push する方法の改善（Git LFS などの活用）
+- Terraform Apply 後の自動 Destroy / クリーンアップの手順の整理
+- EC2 に対する SSH 接続の自動化（Ansible や cloud-init の活用）
+
+---
