@@ -7,7 +7,7 @@
 - VPC + Public Subnet
 - Internet Gateway (IGW)
 - EC2 インスタンス（Auto Scaling 対応）
-- Application Load Balancer (ALB)
+- Application Load Balancer (ALB）
 - Security Group 設定
 - ターゲットグループと Listener の設定
 
@@ -17,17 +17,17 @@
 
 ## 使用スタック
 
-| 技術       | 内容・用途                                      |
-|------------|--------------------------------------------------|
-| Terraform  | インフラ構成のコード管理（IaC）                  |
-| AWS EC2    | Web サーバーとしての仮想マシン                    |
-| AWS VPC    | ネットワークの基盤構成                           |
-| AWS Subnet | パブリックサブネットの設計                       |
-| AWS IGW    | インターネットアクセスのためのゲートウェイ       |
-| AWS ALB    | HTTP リクエストの負荷分散                        |
-| Auto Scaling | EC2 インスタンスの自動スケーリング             |
-| Security Group | SSH / HTTP アクセス制御                      |
-| GitHub     | コードと成果物のバージョン管理・公開             |
+| 技術           | 用途・内容                                      |
+|----------------|--------------------------------------------------|
+| Terraform      | インフラ構成のコード管理（IaC）                  |
+| AWS EC2        | Web サーバーとしての仮想マシン                    |
+| AWS VPC        | ネットワークの基盤構成                           |
+| AWS Subnet     | パブリックサブネットの設計                       |
+| AWS IGW        | インターネットアクセスのためのゲートウェイ       |
+| AWS ALB        | HTTP リクエストの負荷分散                        |
+| Auto Scaling   | EC2 インスタンスの自動スケーリング               |
+| Security Group | SSH / HTTP アクセス制御                          |
+| GitHub         | コードと成果物のバージョン管理・公開             |
 
 ---
 
@@ -56,31 +56,31 @@
 ## スクリーンショット一覧（構築順）
 
 ### 1. Terraform Apply 完了画面  
-![Terraform Apply Complete](images/image_5.png)  
+![Terraform Apply Complete](images/terraform_apply_complete.png)  
 Terraform によるリソース作成が正常に完了したことを示す出力結果。すべての構成がコードで自動化されていることを証明。
 
-### 2. VPC の作成確認  
-![VPC](images/image_1.png)  
+### 2. VPC / Subnet 構成の全体確認  
+![VPC Subnet Overview](images/vpc_subnet_overview.png)  
+VPC と Subnet の構成全体を俯瞰。CIDR や AZ、ルートテーブルとの関連が確認できます。
+
+### 3. VPC の作成確認  
+![VPC](images/sg_vpc_overview.png)  
 Terraform により作成された VPC の詳細。CIDR ブロックや関連リソースが確認できます。
 
-### 3. Public Subnet の確認  
-![Subnet](images/image_2.png)  
+### 4. Public Subnet の確認  
+![Subnet](images/sg_http_listener.png)  
 VPC 内に作成されたパブリックサブネットの設定。AZ やルートテーブルとの関連も確認。
 
-### 4. Internet Gateway のアタッチ確認  
-![Internet Gateway](images/image_3.png)  
+### 5. Internet Gateway のアタッチ確認  
+![Internet Gateway](images/internet_gateway.png)  
 IGW が VPC にアタッチされていることを確認。インターネットアクセスのために必要な構成。
 
-### 5. Security Group / VPC 構成の全体像  
-![SG / VPC Overview](images/sg_vpc_overview.png)  
-VPC と Security Group の構成を確認。VPC の CIDR や SG の関連付けが表示されています。
-
 ### 6. セキュリティグループ HTTP/SSH 設定  
-![SG HTTP Listener](images/sg_http_listener.png)  
+![Security Group](images/sg_http_listener.png)  
 HTTP（ポート80）と SSH（ポート22）のインバウンドルールを設定したセキュリティグループの詳細。
 
 ### 7. EC2 インスタンスの起動確認  
-![EC2](images/image_4.png)  
+![EC2 Instances](images/ec2_instances.png)  
 Auto Scaling により起動された EC2 インスタンスのステータスと詳細情報。ALB のターゲットとして登録される。
 
 ### 8. ターゲットグループの構成確認  
@@ -90,6 +90,10 @@ Auto Scaling により起動された EC2 インスタンスのステータス�
 ### 9. ALB Listener 設定  
 ![ALB Listener](images/alb_listener.png)  
 ALB に設定されたリスナーの構成。HTTP リクエストをターゲットグループにルーティングする設定を確認。
+
+### 10. Terraform Destroy 完了画面  
+![Terraform Destroy Complete](images/terraform_destroy_complete.png)  
+構築後のリソースを Terraform によりクリーンアップしたことを示す出力結果。環境の破棄もコードで管理。
 
 ---
 
